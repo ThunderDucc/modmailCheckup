@@ -47,8 +47,8 @@ def generateMessage(username, index):
     # generates the embed
     emb = discord.Embed(title="Modmail info for u/{}".format(mod.name), color=colour)
     emb.set_thumbnail(url=mod.icon_img)
-    emb.description = "Most recent interaction from thread **{}** of **{}**".format(index + 1, len(threadsByMod[mod.name][0]))
-    emb.add_field(name="Link", value="https://mod.reddit.com/mail/all/{}".format(thread.id), inline=True)
+    emb.description = "Most recent interaction from thread **{}** of **{}** on {}".format(index + 1, len(threadsByMod[mod.name][0]), thread.last_mod_update[:10])
+    emb.add_field(name="Link", value="[{}](https://mod.reddit.com/mail/all/{})".format(thread.id, thread.id), inline=True)
     emb.add_field(name="Participant", value=participant.name, inline=True)
     emb.add_field(name="Subject", value=thread.subject, inline=True)
     emb.add_field(name="Message", value=msg.body_markdown, inline=False)
