@@ -24,4 +24,4 @@ def next(username: String) -> discord.Embed:
 
 def back(username: String) -> discord.Embed:
 
-    based on the username, we get the index in the threadsByMod entry for that user and add 1, then call GenerateMessage to get the embed for the following thread
+    Same as next but subtract 1
