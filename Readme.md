@@ -20,7 +20,7 @@ def generateMessage(username: String, index: int) -> discord.Embed:
 
 def next(username: String) -> discord.Embed:
 
-    based on the username, we get the index in the threadsByMod entry for that user and add 1, then call GenerateMessage to get the embed for the following thread
+    Gets the next thread. we get the threadsByMod entry for that username and add 1 to the assosiated index, then call GenerateMessage to get the embed
 
 def back(username: String) -> discord.Embed:
 
