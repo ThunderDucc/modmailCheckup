@@ -22,14 +22,14 @@ async def on_reaction_add(ctx, user):
     # We ensure that the message was sent by the bot, but the reaction was not added by the bot
     if msg.author == client.user and user != client.user:
         description = msg.embeds[0].title
-        user = description[19:]
+        mod = description[19:]
         emb = None
         # if it's one of the arrows, remove the reaction and then use next() or back() to generate the new embed
         if ctx.emoji == "➡":
             await ctx.remove(user)
-            await msg.edit(embed=f.next(user))
+            await msg.edit(embed=f.next(mod))
         elif ctx.emoji == "⬅":
             await ctx.remove(user)
-            await msg.edit(embed=f.back(user))
+            await msg.edit(embed=f.back(mod))
 
 client.run('')
