@@ -65,7 +65,7 @@ def next(username):
         index += 1
         if index >= len(threadsByMod[username][0]):
             index = 0
-        threadsByMod[mod][1] = index
+        threadsByMod[username][1] = index
     else:
         # mod hasn't been called yet, generate their threads and keep index at 0
         getConversations(username)
@@ -79,7 +79,7 @@ def back(username):
         index -= 1
         if index < 0:
             index = len(threadsByMod[username][0]) - 1
-        f.threadsByMod[mod][1] = index
+        threadsByMod[username][1] = index
     else:
         # mod hasn't been called yet, generate their threads and keep index at 0
         getConversations(username)
