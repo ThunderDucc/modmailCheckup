@@ -10,9 +10,12 @@ lim: int, number of previous modmails to search through
 
 threadsByMod: dict( username: [[ModMailConversation], index] )
     
-def getConversations(username: String) -> void:
+    index is -1 when the user is not a mod
+
+def getConversations(username: String) -> boolean:
 
     This searches the last lim modmail threads, and adds all featuring mod username into threadsByMod
+    return is OPTIONAL: returns if the user exists, is modded, and has more than 1 thread.
 
 def generateMessage(username: String, index: int) -> discord.Embed:
 
