@@ -11,18 +11,22 @@ threadCap = 50
 # this will store all conversations for redditors that were called
 # redditor.name: (ModmailConversation[], index)
 threadsByMod = dict()
+# list of mod usernames in the sub. This is to avoid needing correct capitalization
+mods = dict()
 
 # this function gets all conversations with a certain mod
 # and will put them into the master threadsByMod dictionary
 def getConversations(username):
-    if username not in subreddit.moderator():
+    for mod in subreddit.moderator():
+        mods[mod.name.lower()] = mod.name
+
+    if username.lower() not in mods:
         # we don't want to check threads for them
-        print("fyuck")
         threadsByMod[username] = None
         return
     
     # now actually check them out
-    mod = reddit.redditor(username)
+    mod = reddit.redditor(mods[username.lower()])
     # load the last few recent modmail threads (based on the variable lim), starting from most recent
     conversations = subreddit.modmail.conversations(limit=lim, sort="recent", state="archived")
 
@@ -44,15 +48,13 @@ def getConversations(username):
         if threadCount >= lim/10:
             break
     # We keep track of which index we're on by using an array
-    # index 0 of the array is the array of threads
-    # index 2 is the index which we should send the message from
     # start from 0, the most recent
     threadsByMod[mod.name] = [withMod, 0]
 
 def generateMessage(username, index):
     # i'm lazy. just a try/except here because it's all the same error message if it doesn't work
     try:
-        mod = reddit.redditor(username)
+        mod = reddit.redditor(mods[username.lower()])
         # check if there are actually threads
         if len(threadsByMod[mod.name][0]) > 0:
             # Gets the thread from the index provided
@@ -81,14 +83,12 @@ def generateMessage(username, index):
             emb = discord.Embed(title="Modmail info for u/{}".format(mod.name), color=colour)
             emb.set_thumbnail(url=mod.icon_img)
             emb.description = "This user has no modmail threads"
-            emb.set_author(name=mod.name)
             emb.timestamp = datetime.datetime.utcnow()  
             emb.set_footer(text="Bot made by Canadapost Duck#3062")
             return emb
     except:
         emb = discord.Embed(title="Modmail info for u/{}".format(username), color=colour)
         emb.description = "There was an error processing this user. Perhaps check the spelling and capitalization of their username"
-        emb.set_author(name=username)
         emb.timestamp = datetime.datetime.utcnow()  
         emb.set_footer(text="Bot made by Canadapost Duck#3062")
         return emb
@@ -98,6 +98,7 @@ def generateMessage(username, index):
 def cycle(username, direction):
     # if we already calculated the threads, just move on to the next one
     index = 0
+    username = mods[username.lower()]
     if username in threadsByMod:
         if threadsByMod[username]: # None means they are not a valid mod
             index = threadsByMod[username][1]

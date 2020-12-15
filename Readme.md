@@ -1,4 +1,4 @@
-# modmailCheckup bot v1.1
+# modmailCheckup bot v1.2
 
 ## To setup
 1. in main.py add the token of your bot on line 35
@@ -12,6 +12,12 @@ threadsByMod: dict( username: [[ModMailConversation], index] )
     
     Set to `none` when the user is not a mod
 
+mods: dict( lowercasename: actualusername )
+
+    this stores the actual username of the mod
+    and can be accessed with the lowercase version
+    this is so capitalization from discord doesn't matter
+
 def getConversations(username: String) -> boolean:
 
     This searches the last lim modmail threads, and adds all featuring mod username into threadsByMod
@@ -19,6 +25,7 @@ def getConversations(username: String) -> boolean:
 def generateMessage(username: String, index: int) -> discord.Embed:
 
     based on the username and index, we get all info from the modmail thread in threadsByMod[username][index]
+    the username is stored in the `author` field in the embed. Which can be accessed with msg.embeds[0].author.name
 
 def cycle(username: String, direction: int) -> discord.Embed:
 
@@ -28,7 +35,19 @@ def cycle(username: String, direction: int) -> discord.Embed:
 
     DIRECTION: 1 to go up, -1 to go down
 
-### What I want for v1.2
-    Remove need for capitalization
-    Improve speeds for getting threads
-    modmail matrix
+### V1.1 
+
+    - cleaned up next/back functions into the cycle function
+    - removed several if statements in favour of try/except in generateMessage()
+    - removed return from getConversations() (was not needed)
+    - other small code fixes
+
+### V1.2
+
+    - emojis don't appear on messages they shouldn't be on
+    - capitalization of the username now does not matter
+
+### V1.3 TBD
+
+    - !!speed up getting the threads!!
+
